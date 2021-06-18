@@ -82,7 +82,7 @@
       !unsupported.checkVersion(process.version).unsupported
     ) {
       const pkg = require('../src/package.json')
-      let notifier = require('update-notifier')({pkg})
+      const notifier = require('update-notifier')({pkg})
       const isCI = require('ci-info').isCI
       if (
         notifier.update &&
@@ -94,7 +94,7 @@
         const useUnicode = npm.config.get('unicode')
         const old = notifier.update.current
         const latest = notifier.update.latest
-        let type = notifier.update.type
+        const type = notifier.update.type
         if (useColor) {
           switch (type) {
             case 'major':

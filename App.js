@@ -67,7 +67,7 @@ import translate from './src/Components/getLocalizedText';
 // import * as firebase from "firebase";
 
 function App() {
-  let backArrowImage = () => (
+  const backArrowImage = () => (
     <Image source={backArrow} style={styles.goBackArrow} />
   );
 

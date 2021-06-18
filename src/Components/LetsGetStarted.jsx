@@ -9,7 +9,7 @@ import translate from './getLocalizedText';
 
 export default LetsGetStarted = (props) => {
   const [fadeValue, setFadeValue] = useState(new Animated.Value(0));
-  let _isMounted = false;
+  const _isMounted = false;
 
   useEffect(() => {
     _isMounted = true;
@@ -27,7 +27,7 @@ export default LetsGetStarted = (props) => {
     return () => (_isMounted = false);
   }, []);
 
-  let _start = () => {
+  const _start = () => {
     Animated.timing(fadeValue, {
       toValue: 1,
       useNativeDriver: false,
@@ -35,7 +35,7 @@ export default LetsGetStarted = (props) => {
     }).start();
   };
 
-  let confettiVibration = async () => {
+  const confettiVibration = async () => {
     await Haptics.selectionAsync();
     await Haptics.selectionAsync();
     await Haptics.selectionAsync();

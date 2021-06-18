@@ -35,7 +35,7 @@ export default SignUpPassword = (props) => {
       .done();
   }, []);
 
-  let onPress = () => {
+  const onPress = () => {
     if (password !== repeat) {
       alert(translate('passwordMismatch'));
     } else if (!password || !repeat) {

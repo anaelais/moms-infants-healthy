@@ -3,7 +3,7 @@ import en_US from '../en_US.json';
 import es_ES from '../es_ES.json';
 import ht_HT from '../ht_HT.json';
 
-let deviceLanguage =
+const deviceLanguage =
   Platform.OS === 'ios'
     ? NativeModules.SettingsManager.settings.AppleLanguages[0] ||
       NativeModules.SettingsManager.settings.AppleLocale

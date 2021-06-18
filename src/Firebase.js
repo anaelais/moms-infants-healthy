@@ -126,9 +126,9 @@ export const getUserInfo = (uid) => firebase.database().ref(`users/${uid}`);
 
 // fetches a given property from the current user
 export const getUserData = async (property) => {
-  let uid = firebase.auth().currentUser.uid;
-  let address = `users/${uid}/${property}`;
-  let value = '';
+  const uid = firebase.auth().currentUser.uid;
+  const address = `users/${uid}/${property}`;
+  const value = '';
   await firebase
     .database()
     .ref(address)
@@ -149,7 +149,7 @@ export const registerForPushNotificationsAsync = async (currentUser) => {
   const {existingStatus} = await Permissions.getAsync(
     Permissions.NOTIFICATIONS
   );
-  let finalStatus = existingStatus;
+  const finalStatus = existingStatus;
   if (existingStatus !== 'granted') {
     const {status} = await Permissions.askAsync(Permissions.NOTIFICATIONS);
     finalStatus = status;
@@ -159,9 +159,9 @@ export const registerForPushNotificationsAsync = async (currentUser) => {
     return;
   }
   // Get the token that uniquely identifies this device
-  let token = await Notifications.getExpoPushTokenAsync();
+  const token = await Notifications.getExpoPushTokenAsync();
   // POST the token to our backend so we can use it to send pushes from there
-  let updates = {};
+  const updates = {};
   updates['/expoToken'] = token;
   await firebase.database().ref(`users/${currentUser.uid}`).update(updates);
   // call the push notification
@@ -172,9 +172,9 @@ export const sendPushNotification = async (title, body, data) => {
   const usersRef = await firebase.database().ref('users');
 
   usersRef.on('value', (users) => {
-    let userList = users.val();
+    const userList = users.val();
 
-    let expoTokenList = [];
+    const expoTokenList = [];
     Object.keys(userList).forEach((key) => {
       if (
         userList[key].expoToken &&
@@ -235,7 +235,7 @@ export const uploadImage = async (
 };
 
 export const grabImages = (user, documents, setDocuments) => {
-  let storageRef = firebase.storage().ref(user.uid);
+  const storageRef = firebase.storage().ref(user.uid);
   // Now we get the references of these images
   storageRef
     .listAll()
@@ -255,7 +255,7 @@ export const grabImages = (user, documents, setDocuments) => {
 };
 
 const makeDocumentsList = (url, name, documents, setDocuments) => {
-  let found = false;
+  const found = false;
   documents.forEach((item) => {
     if (item.url == url) {
       found = true;
@@ -307,8 +307,8 @@ export const fetchAppointment = async (uid, setObjects, _isMounted) => {
       .ref(`users/${uid}/appointments/`)
       .once('value', (snapshot) => {
         snapshot.forEach((childSnapshot) => {
-          let childKey = childSnapshot.key;
-          let childData = childSnapshot.val();
+          const childKey = childSnapshot.key;
+          const childData = childSnapshot.val();
           console.log(childKey);
           console.log(childData);
           if (
@@ -342,8 +342,8 @@ export const fetchImmunization = async (uid, setObjects, _isMounted) => {
       .ref(`users/${uid}/immunizations/`)
       .once('value', (snapshot) => {
         snapshot.forEach((childSnapshot) => {
-          let childKey = childSnapshot.key;
-          let childData = childSnapshot.val();
+          const childKey = childSnapshot.key;
+          const childData = childSnapshot.val();
           if (
             childSnapshot.val() !== null ||
             childSnapshot.val() !== 'undefined'
@@ -395,8 +395,8 @@ export const fetchReference = async (uid, setReferences, _isMounted) => {
       .ref(`users/${uid}/references/`)
       .once('value', (snapshot) => {
         snapshot.forEach((childSnapshot) => {
-          let childKey = childSnapshot.key;
-          let childData = childSnapshot.val();
+          const childKey = childSnapshot.key;
+          const childData = childSnapshot.val();
           console.log(childKey);
           console.log(childData);
           if (

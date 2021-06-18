@@ -89,10 +89,10 @@ export default function NewAppointment(props) {
   };
 
   addEventsToCalendar = async (calendardId) => {
-    let hours = moment(time, ['HH:mm a', 'h:mm a']).hours();
-    let minutes = moment(time, ['HH:mm a', 'h:mm a']).minutes();
-    let addHours = moment(time, ['HH:mm a', 'h:mm a']).add(1, 'h').hours();
-    let addMinutes = moment(time, ['HH:mm a', 'h:mm a']).add(30, 'm').minutes();
+    const hours = moment(time, ['HH:mm a', 'h:mm a']).hours();
+    const minutes = moment(time, ['HH:mm a', 'h:mm a']).minutes();
+    const addHours = moment(time, ['HH:mm a', 'h:mm a']).add(1, 'h').hours();
+    const addMinutes = moment(time, ['HH:mm a', 'h:mm a']).add(30, 'm').minutes();
 
     const event = {
       title: name,

@@ -34,7 +34,7 @@ const SettingsScreen = (props) => {
   const [pregnant, setPregnant] = useState(null);
   const datetimeField = useRef(null);
   const [databaseInfo, setDatabaseInfo] = useState([]);
-  let _isMounted = false;
+  const _isMounted = false;
 
   const uid = getUid();
 
@@ -58,9 +58,9 @@ const SettingsScreen = (props) => {
       console.log(`User id >>>>>>>>>: ${uid}`);
       getUserInfo(uid).on('value', (snapshot) => {
         if (_isMounted) {
-          let SnapShot = snapshot.val();
+          const SnapShot = snapshot.val();
           /*  Info currently from the database */
-          let databaseInfo = [
+          const databaseInfo = [
             SnapShot?.fullName,
             SnapShot?.phoneNumber,
             SnapShot?.dob,
@@ -70,7 +70,7 @@ const SettingsScreen = (props) => {
             SnapShot?.babyDOB,
           ];
 
-          let [
+          const [
             fullName,
             phoneNumber,
             dob,
@@ -99,9 +99,9 @@ const SettingsScreen = (props) => {
   onSubmit = () => {
     Haptics.selectionAsync().then();
     /* This function returns an array with nextWeek and week number */
-    let babyInfo = getNextWeekAndWeekNo();
+    const babyInfo = getNextWeekAndWeekNo();
     /* We make copies of the state variables so we can mutate them */
-    let [FullName, PhoneNumber, Dob, Infant, Pregnant, LiveMiami, BabyDOB] = [
+    const [FullName, PhoneNumber, Dob, Infant, Pregnant, LiveMiami, BabyDOB] = [
       fullName,
       phoneNumber,
       dob,
@@ -112,7 +112,7 @@ const SettingsScreen = (props) => {
     ];
 
     /* Original user info from the database */
-    let [
+    const [
       _fullName,
       _phoneNumber,
       _dob,
@@ -134,7 +134,7 @@ const SettingsScreen = (props) => {
     !Infant ? (Infant = false) : null;
     !Pregnant ? (Pregnant = false) : null;
 
-    let userInfo = {};
+    const userInfo = {};
     FullName !== _fullName ? (userInfo.fullName = FullName) : null;
     PhoneNumber !== _phoneNumber ? (userInfo.phoneNumber = PhoneNumber) : null;
     Dob !== _dob ? (userInfo.dob = Dob) : null;
@@ -232,23 +232,23 @@ const SettingsScreen = (props) => {
   }, []);
 
   getNextWeekAndWeekNo = () => {
-    let newbabyDOB = new Date(babyDOB);
-    let today = new Date();
-    let daysDifference =
+    const newbabyDOB = new Date(babyDOB);
+    const today = new Date();
+    const daysDifference =
       ((today.getTime() - newbabyDOB.getTime()) / (1000 * 3600 * 24)) | 0; // The | 0 is just a way to cast to int
-    let daysTillNextWeek = (7 - (daysDifference % 7)) % 7;
-    let nextweek = new Date(
+    const daysTillNextWeek = (7 - (daysDifference % 7)) % 7;
+    const nextweek = new Date(
       today.getFullYear(),
       today.getMonth(),
       today.getDate() + daysTillNextWeek
     );
-    let nextWeek = `${(nextweek.getMonth() + 1)
+    const nextWeek = `${(nextweek.getMonth() + 1)
       .toString()
       .padStart(2, '0')}/${nextweek
       .getDate()
       .toString()
       .padStart(2, '0')}/${nextweek.getFullYear()}`;
-    let weekNo =
+    const weekNo =
       daysTillNextWeek === 0
         ? (daysDifference / 7) | 0
         : (daysDifference / 7 + 1) | 0;
@@ -258,7 +258,7 @@ const SettingsScreen = (props) => {
     }
     return [nextWeek, weekNo];
   };
-  let saveCookie = async (key, value) => {
+  const saveCookie = async (key, value) => {
     try {
       await AsyncStorage.setItem(key, value).then();
     } catch (e) {
@@ -266,7 +266,7 @@ const SettingsScreen = (props) => {
     }
   };
 
-  let logout = () => {
+  const logout = () => {
     saveCookie('email', '');
     saveCookie('password', '');
     saveCookie('uid', '');
@@ -307,7 +307,7 @@ const SettingsScreen = (props) => {
                 options={{
                   format: 'MM/DD/YYYY',
                   validator(value, settings) {
-                    let regex = /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/;
+                    const regex = /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/;
                     return regex.test(value);
                   }, // This validator function is read by isValid()
                   // Still need to implement a check for isValid
@@ -394,7 +394,7 @@ const SettingsScreen = (props) => {
                   options={{
                     format: 'MM/DD/YYYY',
                     validator(value, settings) {
-                      let regex = /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/;
+                      const regex = /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/;
                       return regex.test(value);
                     },
                   }}

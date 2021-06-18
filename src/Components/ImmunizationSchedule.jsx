@@ -12,7 +12,7 @@ import appStyles, {borderRadius, shadow} from './AppStyles';
 import {fetchImmunization, getUid} from '../Firebase';
 
 export default function ImmunizationSchedule() {
-  let _isMounted = false;
+  const _isMounted = false;
   const [objects, setObjects] = useState([]);
   const uid = getUid();
 
@@ -25,7 +25,7 @@ export default function ImmunizationSchedule() {
     return () => (_isMounted = false);
   }, []);
 
-  let scheduleData = [
+  const scheduleData = [
     {
       age: 'Birth',
       immunizations: [
@@ -189,7 +189,7 @@ export default function ImmunizationSchedule() {
   ];
 
   displayCheckBox = (immunizations, scheduleData) => {
-    let types = immunizations.map((item) => {
+    const types = immunizations.map((item) => {
       const {type} = item?.val();
       if (type === scheduleData) return type;
       return undefined;

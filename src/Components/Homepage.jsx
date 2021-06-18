@@ -25,40 +25,40 @@ export default Homepage = (props) => {
   }, []);
 
   // This is a holder function for fetching the facilities (clinics and shelters) asynchronously
-  let fetchResources = async () => {
+  const fetchResources = async () => {
     sortClinics(await fetchClinics()); // Sorts the fetched clinics
     setShelters(await fetchShelters()); // Stores the fetched shelters, you could sort them by copying the logic from sortClinics
   };
 
-  let fetchClinics = async () =>
+  const fetchClinics = async () =>
     new Promise((resolve, reject) => {
-      let clinicsRef = getRef('Clinics');
+      const clinicsRef = getRef('Clinics');
       clinicsRef.once('value', (snapshot) => {
         resolve(snapshot.val());
       });
     });
 
-  let fetchShelters = async () =>
+  const fetchShelters = async () =>
     new Promise((resolve, reject) => {
-      let sheltersRef = getRef('Shelters');
+      const sheltersRef = getRef('Shelters');
       sheltersRef.once('value', (snapshot) => {
         resolve(snapshot.val());
       });
     });
 
-  let sortClinics = async (clinics) => {
+  const sortClinics = async (clinics) => {
     try {
-      let position = await getPosition();
-      let Clinics = clinics; // For mutation, cant mutate param
-      let latitude = position.coords.latitude;
-      let longitude = position.coords.longitude;
+      const position = await getPosition();
+      const Clinics = clinics; // For mutation, cant mutate param
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
       Clinics.forEach((clinic) => {
         // Returns a precise distance between the two coordinates given (Clinic & User)
-        let dist = getPreciseDistance(clinic.coordinate, {
+        const dist = getPreciseDistance(clinic.coordinate, {
           latitude,
           longitude,
         });
-        let distanceInMiles = Number(((dist / 1000) * 0.621371).toFixed(2)); // Convert meters to miles with 2 decimal places
+        const distanceInMiles = Number(((dist / 1000) * 0.621371).toFixed(2)); // Convert meters to miles with 2 decimal places
         clinic.distance = distanceInMiles; // store the distance as a property of clinic
       });
       Clinics.sort((a, b) => a.distance - b.distance); // Sort by lowest distance
@@ -71,13 +71,13 @@ export default Homepage = (props) => {
   };
 
   // Gets the current user position
-  let getPosition = (options) =>
+  const getPosition = (options) =>
     new Promise((resolve, reject) => {
       navigator.geolocation.getCurrentPosition(resolve, reject, options);
     });
 
-  let goBack = () => {
-    let content = lowerPanelContent;
+  const goBack = () => {
+    const content = lowerPanelContent;
 
     switch (content) {
       case 'selection':

@@ -14,7 +14,7 @@ import {
 } from '../Firebase';
 
 export default function Immunization(props) {
-  let _isMounted = false;
+  const _isMounted = false;
   const [objects, setObjects] = useState([]);
   const uid = getUid();
   const email = getUEmail();
@@ -38,7 +38,7 @@ export default function Immunization(props) {
 
   sendEmailViaEmailApp = (toMailId, subject, body) => {
     if (typeof toMailId !== 'undefined') {
-      let link = `mailto:${toMailId}`;
+      const link = `mailto:${toMailId}`;
       if (typeof subject !== 'undefined') {
         link = `${link}?subject=${subject}`;
       }
@@ -59,7 +59,7 @@ export default function Immunization(props) {
       console.log('sendEmailViaEmailApp -----> mail link is undefined');
     }
   };
-  let emailBody = JSON.stringify(objects, null, ' ').replace(
+  const emailBody = JSON.stringify(objects, null, ' ').replace(
     /[\{\[\]\"\}\,]+/g,
     ''
   );

@@ -5,11 +5,11 @@ import {getUid, getUserInfo} from '../Firebase';
 import translate from './getLocalizedText';
 
 export default WelcomeUserBanner = (props) => {
-  let fullName = null;
+  const fullName = null;
   getUserInfo(getUid()).once('value', (snapshot) => {
     fullName = snapshot.val()?.fullName;
   }); // Get fullName from DB
-  let initialText = `${translate('welcomeUserBanner')} ${
+  const initialText = `${translate('welcomeUserBanner')} ${
     fullName ? fullName.split(' ')[0] : ''
   }`;
   const [text, setText] = useState(initialText);

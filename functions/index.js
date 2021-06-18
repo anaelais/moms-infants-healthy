@@ -2,7 +2,7 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 
 admin.initializeApp(functions.config().firebase);
-let fetch = require('node-fetch');
+const fetch = require('node-fetch');
 const getLocalizedText = require('./getLocalizedText');
 const message = require('./message');
 
@@ -24,13 +24,13 @@ exports.sendPushNotification = functions.database
     const snapshot = event.after; // Snapshot of the database at the user/:infant level after update
     const ref = event.after.ref.parent; // Reference of the user (One level above infant)
 
-    let messages = []; // Create an empty array to push stuff into
+    const messages = []; // Create an empty array to push stuff into
 
     if (snapshot.val() === true) {
       // If infant is true/ changed to true
       return ref.once('value').then((snapshot) => {
         console.log(snapshot);
-        let expoToken = snapshot.val().expoToken; // fetch expotoken (credential for push notification)
+        const expoToken = snapshot.val().expoToken; // fetch expotoken (credential for push notification)
         messages.push({
           to: expoToken,
           sound: 'default',
@@ -55,9 +55,9 @@ exports.sendPushNotification = functions.database
 /* This function triggers daily and it checks to see if today's date matches the date at which one or more users should receive
 a weekly message, if so, it sends the correct weekly message to the user(s) */
 exports.sendWeeklySMS = functions.https.onRequest((req, res) => {
-  let ref = admin.database().ref('users');
-  let today = new Date();
-  let date = `${(today.getMonth() + 1)
+  const ref = admin.database().ref('users');
+  const today = new Date();
+  const date = `${(today.getMonth() + 1)
     .toString()
     .padStart(2, '0')}/${today
     .getDate()
@@ -70,16 +70,16 @@ exports.sendWeeklySMS = functions.https.onRequest((req, res) => {
     .then((snapshot) => {
       snapshot.forEach((childSnapshot) => {
         // loops through said filtered users
-        let phoneNumber = childSnapshot.val().phoneNumber;
-        let week = `week${childSnapshot.val().week}`; // get the week they are on from the db
-        let deviceLanguage = childSnapshot.val().deviceLanguage;
+        const phoneNumber = childSnapshot.val().phoneNumber;
+        const week = `week${childSnapshot.val().week}`; // get the week they are on from the db
+        const deviceLanguage = childSnapshot.val().deviceLanguage;
 
-        let motherMsg = getLocalizedText.translate(
+        const motherMsg = getLocalizedText.translate(
           deviceLanguage,
           week,
           'Mother'
         ); // fetch mother message
-        let babyMsg = getLocalizedText.translate(deviceLanguage, week, 'Baby'); // fetch baby message
+        const babyMsg = getLocalizedText.translate(deviceLanguage, week, 'Baby'); // fetch baby message
         /* Note that every time the user gets two messages each week */
 
         // create SMS with message for mother and another with message for baby
@@ -88,19 +88,19 @@ exports.sendWeeklySMS = functions.https.onRequest((req, res) => {
         message.sendCustomSMS(phoneNumber, babyMsg);
 
         // Update nextWeek by adding 7 days (in preparation for next week)
-        let nextweek = new Date(
+        const nextweek = new Date(
           today.getFullYear(),
           today.getMonth(),
           today.getDate() + 7
         );
-        let nextWeek = `${(nextweek.getMonth() + 1)
+        const nextWeek = `${(nextweek.getMonth() + 1)
           .toString()
           .padStart(2, '0')}/${nextweek
           .getDate()
           .toString()
           .padStart(2, '0')}/${nextweek.getFullYear()}`;
         // Update week number [+1]
-        let nextWeekNo = childSnapshot.val().week + 1;
+        const nextWeekNo = childSnapshot.val().week + 1;
         nextWeekNo < 25 ? null : (nextWeekNo = null); // (If weekNumber > 24 set it to null)
         nextWeekNo ? null : (nextWeek = null); // If weekNo is null set the date to null as well. This will remove it from firebase
         childSnapshot.ref.update({
@@ -119,14 +119,14 @@ exports.sendWeeklySMS = functions.https.onRequest((req, res) => {
 that "tomorrow you've got an appointment" via SMS
 The function triggers every day on its own */
 exports.sendAppointmentReminder = functions.https.onRequest((req, res) => {
-  let ref = admin.database().ref('users');
-  let today = new Date();
-  let tomorrow = new Date(
+  const ref = admin.database().ref('users');
+  const today = new Date();
+  const tomorrow = new Date(
     today.getFullYear(),
     today.getMonth(),
     today.getDate() + 1
   );
-  let date = `${(tomorrow.getMonth() + 1)
+  const date = `${(tomorrow.getMonth() + 1)
     .toString()
     .padStart(2, '0')}/${tomorrow
     .getDate()
@@ -138,14 +138,14 @@ exports.sendAppointmentReminder = functions.https.onRequest((req, res) => {
       // This is the way to activate the function to do stuff in the database
       snapshot.forEach((childSnapshot) => {
         // childSnapshot in this case is each individual user
-        let appointmentSnapshot = childSnapshot.child('appointments'); // gets a reference to appointments for a user
-        let phoneNumber = childSnapshot.val().phoneNumber;
-        let deviceLanguage = childSnapshot.val().deviceLanguage;
-        let msg = 'Hello, you got an appointment tomorrow'; // This could be made dynamic depending on deviceLanguage
+        const appointmentSnapshot = childSnapshot.child('appointments'); // gets a reference to appointments for a user
+        const phoneNumber = childSnapshot.val().phoneNumber;
+        const deviceLanguage = childSnapshot.val().deviceLanguage;
+        const msg = 'Hello, you got an appointment tomorrow'; // This could be made dynamic depending on deviceLanguage
 
         appointmentSnapshot.forEach((childAptmtSnapshot) => {
           // Loops through each Appointment
-          let aptmtDate = childAptmtSnapshot.child('date').val();
+          const aptmtDate = childAptmtSnapshot.child('date').val();
           if (aptmtDate === date) {
             // If appt date is tomorrow send reminder
             message.sendCustomSMS(phoneNumber, msg);
@@ -162,14 +162,14 @@ exports.sendAppointmentReminder = functions.https.onRequest((req, res) => {
 and if so auto deletes them because we assume they are no longer relevant the day after it was supposed to take place */
 exports.deleteAppointment = functions.https.onRequest((req, res) => {
   /* Very similar to  sendAppointmentReminder, check that function for reference */
-  let ref = admin.database().ref('users');
-  let today = new Date();
-  let yesterday = new Date(
+  const ref = admin.database().ref('users');
+  const today = new Date();
+  const yesterday = new Date(
     today.getFullYear(),
     today.getMonth(),
     today.getDate() - 1
   );
-  let date = `${(yesterday.getMonth() + 1)
+  const date = `${(yesterday.getMonth() + 1)
     .toString()
     .padStart(2, '0')}/${yesterday
     .getDate()
@@ -179,10 +179,10 @@ exports.deleteAppointment = functions.https.onRequest((req, res) => {
     .once('value')
     .then((snapshot) => {
       snapshot.forEach((childSnapshot) => {
-        let appointmentSnapshot = childSnapshot.child('appointments');
+        const appointmentSnapshot = childSnapshot.child('appointments');
 
         appointmentSnapshot.forEach((childAptmtSnapshot) => {
-          let aptmtDate = childAptmtSnapshot.child('date').val();
+          const aptmtDate = childAptmtSnapshot.child('date').val();
           if (aptmtDate === date) {
             // Date represents yesterday's date
             childAptmtSnapshot.ref.remove();

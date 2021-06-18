@@ -21,11 +21,11 @@ import BetterMenu from './BetterMenu';
  *
  */
 export const wicHome = (props) => {
-  let toWebsite = () => {
+  const toWebsite = () => {
     Linking.openURL('https://www.fns.usda.gov/wic/wic-how-apply');
   };
 
-  let websiteButton = (
+  const websiteButton = (
     <SelectionButton
       style={appStyles.ImageOnRightSelectionButton}
       text="Website"
@@ -35,7 +35,7 @@ export const wicHome = (props) => {
     />
   );
 
-  let checklistButton = (
+  const checklistButton = (
     <SelectionButton
       style={appStyles.ImageOnRightSelectionButton}
       text="Checklist"
@@ -45,7 +45,7 @@ export const wicHome = (props) => {
     />
   );
 
-  let locationsButton = (
+  const locationsButton = (
     <SelectionButton
       style={appStyles.ImageOnRightSelectionButton}
       text="Locations"
@@ -55,7 +55,7 @@ export const wicHome = (props) => {
     />
   );
 
-  let feedingButton = (
+  const feedingButton = (
     <SelectionButton
       style={appStyles.ImageOnRightSelectionButton}
       text="Feeding"
@@ -80,7 +80,7 @@ export const wicHome = (props) => {
 };
 
 export const wicChecklist = () => {
-  let checklist = [
+  const checklist = [
     {
       text: 'Family members',
       subtext: 'Each member who is applying to receive WIC must be present.',
@@ -149,31 +149,31 @@ export const wicLocations = (props) => {
   }, []);
 
   // This is a holder function for fetching the facilities (clinics and shelters) asynchronously
-  let fetchResources = async () => {
+  const fetchResources = async () => {
     sortWIC(await fetchWIC()); // Sorts the fetched WIC
   };
 
-  let fetchWIC = async () =>
+  const fetchWIC = async () =>
     new Promise((resolve, reject) => {
-      let wicRef = getRef('WIC');
+      const wicRef = getRef('WIC');
       wicRef.once('value', (snapshot) => {
         resolve(snapshot.val());
       });
     });
 
-  let sortWIC = async (wicLocations) => {
+  const sortWIC = async (wicLocations) => {
     try {
-      let position = await getPosition();
-      let WICLocations = wicLocations; // For mutation, cant mutate param
-      let latitude = position.coords.latitude;
-      let longitude = position.coords.longitude;
+      const position = await getPosition();
+      const WICLocations = wicLocations; // For mutation, cant mutate param
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
       WICLocations.forEach((wic) => {
         // Returns a precise distance between the two coordinates given (Clinic & User)
-        let dist = getPreciseDistance(wic.coordinate, {
+        const dist = getPreciseDistance(wic.coordinate, {
           latitude,
           longitude,
         });
-        let distanceInMiles = Number(((dist / 1000) * 0.621371).toFixed(2)); // Convert meters to miles with 2 decimal places
+        const distanceInMiles = Number(((dist / 1000) * 0.621371).toFixed(2)); // Convert meters to miles with 2 decimal places
         wic.distance = distanceInMiles; // store the distance as a property of clinic
       });
       WICLocations.sort((a, b) => a.distance - b.distance); // Sort by lowest distance
@@ -186,15 +186,15 @@ export const wicLocations = (props) => {
   };
 
   // Gets the current user position
-  let getPosition = (options) =>
+  const getPosition = (options) =>
     new Promise((resolve, reject) => {
       navigator.geolocation.getCurrentPosition(resolve, reject, options);
     });
 
-  let getResourceName = (name) =>
+  const getResourceName = (name) =>
     name.length > 40 ? `${name.substring(0, 40)}...` : name;
 
-  let wicButtons = wics.map((wic, key) => (
+  const wicButtons = wics.map((wic, key) => (
     <SelectionButton
       style={appStyles.ClinicSelectionButton}
       key={key}
@@ -241,7 +241,7 @@ export const wicLocations = (props) => {
 export const wicFeeding = () => {
   const [age, setAge] = useState(0);
 
-  let showFeedingByAge = () => {
+  const showFeedingByAge = () => {
     if (age == 0) {
       return (
         <View>
